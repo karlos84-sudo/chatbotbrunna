@@ -1,0 +1,10 @@
+{
+  "name": "shopifywhatsappbot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "botbuilder": "^4.21.0",
+    "restify": "^11.1.0"
+  }
+}
+
