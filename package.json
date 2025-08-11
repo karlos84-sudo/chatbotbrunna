@@ -1,18 +1,12 @@
 {
-  "name": "botframework-restify-demo",
+  "name": "hola-mundo-carlos",
   "version": "1.0.0",
-  "description": "Bot Framework con Restify para Azure App Service",
+  "description": "App simple para probar Azure App Service",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
-  "author": "Carlos Benavides",
-  "license": "MIT",
-  "dependencies": {
-    "botbuilder": "^4.22.3",
-    "restify": "^11.1.0"
-  },
   "engines": {
-    "node": ">=18.0.0"
+    "node": "18.x"
   }
 }
