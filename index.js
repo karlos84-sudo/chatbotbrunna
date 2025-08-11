@@ -1,36 +1,27 @@
-const restify = require('restify');
-const { BotFrameworkAdapter } = require('botbuilder');
+const express = require('express');
+const bodyParser = require('body-parser');
 
-// Configuración del adaptador con las credenciales de Azure
-const adapter = new BotFrameworkAdapter({
-    appId: process.env.MicrosoftAppId,
-    appPassword: process.env.MicrosoftAppPassword
+const app = express();
+app.use(bodyParser.json());
+
+// Ruta raíz
+app.get('/', (req, res) => {
+    res.send('Aplicación Node.js funcionando en Azure App Service');
 });
 
-// Servidor Restify
-const server = restify.createServer();
-server.listen(process.env.port || process.env.PORT || 3978, function () {
-    console.log(`\nBot is listening to ${server.url}`);
-});
+// Ruta de prueba para variables de entorno
+app.get('/test-config', (req, res) => {
+    const appId = process.env.MicrosoftAppId;
+    const appPassword = process.env.MicrosoftAppPassword;
 
-// Manejo de mensajes
-adapter.onTurnError = async (context, error) => {
-    console.error(`\n [onTurnError]: ${error}`);
-    await context.sendActivity('Ocurrió un error.');
-};
-
-// Ruta principal del bot
-server.post('/api/messages', (req, res) => {
-    adapter.processActivity(req, res, async (context) => {
-        if (context.activity.type === 'message') {
-            const text = context.activity.text.trim().toLowerCase();
-            if (text === 'hola') {
-                await context.sendActivity('¡Hola! Bienvenido a la tienda 👗. ¿Qué producto quieres consultar?');
-            } else {
-                await context.sendActivity(`Estoy buscando disponibilidad de: "${text}"... (modo demo)`);
-                await context.sendActivity('✅ Sí tenemos disponible ese producto en todas las tallas.');
-            }
-        }
+    res.json({
+        MicrosoftAppId: appId ? 'OK (valor presente)' : 'NO DEFINIDO',
+        MicrosoftAppPassword: appPassword ? 'OK (valor presente)' : 'NO DEFINIDO'
     });
 });
 
+// Puerto asignado por Azure o 3000 en local
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+    console.log(`Servidor ejecutándose en el puerto ${port}`);
+});
